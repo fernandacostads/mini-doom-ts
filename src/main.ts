@@ -1,0 +1,54 @@
+import { Input } from "./core/input";
+import { GameLoop } from "./core/loop";
+import { Game } from "./game/game";
+import { createPlayer } from "./game/player";
+import { createPerlin4D } from "./graphics/perlin";
+import { generateTexture } from "./graphics/texture";
+import { Renderer } from "./render/renderer";
+
+const canvas = document.getElementById("game") as HTMLCanvasElement;
+const ctx = canvas.getContext("2d")!;
+
+function resize() {
+  canvas.width = window.innerWidth / 2;
+  canvas.height = window.innerHeight / 2;
+}
+window.addEventListener("resize", resize);
+resize();
+
+const noise = createPerlin4D();
+
+const wallTex = generateTexture(
+  noise,
+  [0, 0, 0, 0],
+  1.8,
+  [40, 35, 30],
+  [200, 185, 155],
+);
+const floorTex = generateTexture(
+  noise,
+  [10, 0, 0, 0],
+  2.4,
+  [55, 45, 30],
+  [105, 90, 60],
+);
+const ceilTex = generateTexture(
+  noise,
+  [0, 0, 10, 0],
+  1.5,
+  [18, 18, 24],
+  [52, 50, 62],
+);
+
+const player = createPlayer();
+const input = new Input();
+const game = new Game(player, input);
+
+const renderer = new Renderer(ctx, canvas, wallTex, floorTex, ceilTex);
+
+const loop = new GameLoop((dt) => {
+  game.update(dt);
+  renderer.render(player);
+});
+
+loop.start();

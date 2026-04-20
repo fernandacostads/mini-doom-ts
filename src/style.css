@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  background: #000;
+}
+canvas {
+  display: block;
+  width: 100vw;
+  height: 100dvh;
+  image-rendering: pixelated;
+}
