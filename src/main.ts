@@ -54,7 +54,7 @@ const ceilTex = generateTexture(
 );
 
 const gunImage = new Image();
-gunImage.src = "/mini-doom-ts/public/gun.png";
+gunImage.src = "/gun.png";
 
 const player = createPlayer();
 const input = new Input();
