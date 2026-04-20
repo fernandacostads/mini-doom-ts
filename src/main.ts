@@ -54,7 +54,7 @@ const ceilTex = generateTexture(
 );
 
 const gunImage = new Image();
-gunImage.src = "/gun.png";
+gunImage.src = import.meta.env.BASE_URL + "gun.png";
 
 const player = createPlayer();
 const input = new Input();
