@@ -58,8 +58,13 @@ export class Renderer {
       let floorY = player.y + rowDist * (player.dirY - player.planeY);
 
       for (let x = 0; x < w; x++) {
-        const tx = Math.floor(floorX * TEXTURE_SIZE) & (TEXTURE_SIZE - 1);
-        const ty = Math.floor(floorY * TEXTURE_SIZE) & (TEXTURE_SIZE - 1);
+        const tx =
+          ((Math.floor(floorX * TEXTURE_SIZE) % TEXTURE_SIZE) + TEXTURE_SIZE) %
+          TEXTURE_SIZE;
+
+        const ty =
+          ((Math.floor(floorY * TEXTURE_SIZE) % TEXTURE_SIZE) + TEXTURE_SIZE) %
+          TEXTURE_SIZE;
 
         const ti = (ty * TEXTURE_SIZE + tx) * 4;
         const tex = isFloor ? this.floorTex : this.ceilTex;
@@ -145,9 +150,12 @@ export class Renderer {
           ? (mapX - player.x + (1 - stepX) / 2) / rayDirX
           : (mapY - player.y + (1 - stepY) / 2) / rayDirY;
 
+      if (!isFinite(dist) || dist <= 0) continue;
+
       const lineHeight = Math.floor(h / dist);
-      const start = Math.max(0, h / 2 - lineHeight / 2);
-      const end = Math.min(h - 1, h / 2 + lineHeight / 2);
+
+      const start = Math.max(0, Math.floor(h / 2 - lineHeight / 2));
+      const end = Math.min(h - 1, Math.floor(h / 2 + lineHeight / 2));
 
       let wallX =
         side === 0 ? player.y + dist * rayDirY : player.x + dist * rayDirX;
@@ -155,6 +163,7 @@ export class Renderer {
       wallX -= Math.floor(wallX);
 
       let texX = Math.floor(wallX * TEXTURE_SIZE);
+      texX = ((texX % TEXTURE_SIZE) + TEXTURE_SIZE) % TEXTURE_SIZE;
 
       if (side === 0 && rayDirX > 0) texX = TEXTURE_SIZE - texX - 1;
       if (side === 1 && rayDirY < 0) texX = TEXTURE_SIZE - texX - 1;
@@ -164,8 +173,10 @@ export class Renderer {
 
       const shade = side === 1 ? 0.6 : 1;
 
-      for (let y = start; y < end; y++) {
-        const texY = Math.floor(texPos) & (TEXTURE_SIZE - 1);
+      for (let y = start; y <= end; y++) {
+        const texY =
+          ((Math.floor(texPos) % TEXTURE_SIZE) + TEXTURE_SIZE) % TEXTURE_SIZE;
+
         texPos += step;
 
         const ti = (texY * TEXTURE_SIZE + texX) * 4;
