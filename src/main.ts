@@ -7,8 +7,18 @@ import { generateTexture } from "./graphics/texture";
 import { Renderer } from "./render/renderer";
 import "./style.css";
 
+const ui = document.getElementById("ui") as HTMLDivElement;
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
+
+let started = false;
+
+window.addEventListener("keydown", () => {
+  if (!started) {
+    started = true;
+    ui.style.display = "none";
+  }
+});
 
 function resize() {
   canvas.width = window.innerWidth / 2;
