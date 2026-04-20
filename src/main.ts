@@ -5,6 +5,7 @@ import { createPlayer } from "./game/player";
 import { createPerlin4D } from "./graphics/perlin";
 import { generateTexture } from "./graphics/texture";
 import { Renderer } from "./render/renderer";
+import "./style.css";
 
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
