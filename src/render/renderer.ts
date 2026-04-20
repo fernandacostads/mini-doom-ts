@@ -7,6 +7,7 @@ export class Renderer {
   private wallTex: Uint8ClampedArray;
   private floorTex: Uint8ClampedArray;
   private ceilTex: Uint8ClampedArray;
+  private gunImage: HTMLImageElement;
 
   constructor(
     ctx: CanvasRenderingContext2D,
@@ -14,12 +15,14 @@ export class Renderer {
     wallTex: Uint8ClampedArray,
     floorTex: Uint8ClampedArray,
     ceilTex: Uint8ClampedArray,
+    gunImage: HTMLImageElement,
   ) {
     this.ctx = ctx;
     this.canvas = canvas;
     this.wallTex = wallTex;
     this.floorTex = floorTex;
     this.ceilTex = ceilTex;
+    this.gunImage = gunImage;
   }
 
   render(player: Player) {
@@ -195,5 +198,15 @@ export class Renderer {
     }
 
     this.ctx.putImageData(frame, 0, 0);
+
+    const gunW = this.canvas.width * 0.4;
+    const gunH = gunW * 0.75;
+
+    const bob = Math.sin(performance.now() * 0.005) * 5;
+
+    const x = this.canvas.width / 2 - gunW / 2;
+    const y = this.canvas.height - gunH + bob;
+
+    this.ctx.drawImage(this.gunImage, x, y, gunW, gunH);
   }
 }

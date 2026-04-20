@@ -43,4 +43,11 @@ canvas {
 .start {
   margin-top: 20px;
   color: #0f0;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.3;
+  }
 }

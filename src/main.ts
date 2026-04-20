@@ -8,24 +8,24 @@ import { Renderer } from "./render/renderer";
 import "./style.css";
 
 const ui = document.getElementById("ui") as HTMLDivElement;
+
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 
-let started = false;
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
 
-window.addEventListener("keydown", () => {
-  if (!started) {
+let started = false;
+window.addEventListener("keydown", (e) => {
+  if (!started && e.key !== "Shift" && e.key !== "Control") {
     started = true;
     ui.style.display = "none";
   }
 });
-
-function resize() {
-  canvas.width = window.innerWidth / 2;
-  canvas.height = window.innerHeight / 2;
-}
-window.addEventListener("resize", resize);
-resize();
 
 const noise = createPerlin4D();
 
@@ -36,6 +36,7 @@ const wallTex = generateTexture(
   [40, 35, 30],
   [200, 185, 155],
 );
+
 const floorTex = generateTexture(
   noise,
   [10, 0, 0, 0],
@@ -43,6 +44,7 @@ const floorTex = generateTexture(
   [55, 45, 30],
   [105, 90, 60],
 );
+
 const ceilTex = generateTexture(
   noise,
   [0, 0, 10, 0],
@@ -51,11 +53,21 @@ const ceilTex = generateTexture(
   [52, 50, 62],
 );
 
+const gunImage = new Image();
+gunImage.src = "/mini-doom-ts/public/gun.png";
+
 const player = createPlayer();
 const input = new Input();
 const game = new Game(player, input);
 
-const renderer = new Renderer(ctx, canvas, wallTex, floorTex, ceilTex);
+const renderer = new Renderer(
+  ctx,
+  canvas,
+  wallTex,
+  floorTex,
+  ceilTex,
+  gunImage,
+);
 
 const loop = new GameLoop((dt) => {
   game.update(dt);
