@@ -14,8 +14,6 @@
 
 ## 🎥 Preview
 
-> 📌 **Dica:** adicione um GIF do jogo rodando aqui (isso aumenta MUITO o impacto)
-
 ```md id="y5m0e3"
 ![preview](./docs/preview.gif)
 ```
