@@ -1,4 +1,3 @@
-// src/core/input.ts
 export class Input {
   private keys: Record<string, boolean> = {};
 
